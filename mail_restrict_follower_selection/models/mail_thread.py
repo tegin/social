@@ -10,15 +10,16 @@ class MailThread(models.AbstractModel):
         self, result, partner=None, email=None, reason=''):
         result = super(MailThread, self)._message_add_suggested_recipient(
             result, partner=partner, email=email, reason=reason)
+        domain = self.env[
+            'mail.wizard.invite'
+        ]._mail_restrict_follower_selection_get_domain()
+        eval_domain = safe_eval(domain)
         for key in result:
             for partner_id, email, reason in result[key]:
                 if partner_id:
-                    domain = self.env[
-                        'mail.wizard.invite'
-                    ]._mail_restrict_follower_selection_get_domain()
                     partner = self.env['res.partner'].search(
                         [('id', '=', partner_id)] +
-                        safe_eval(domain)
+                        eval_domain
                     )
                     if not partner:
                         result[key].remove((partner_id, email, reason))
