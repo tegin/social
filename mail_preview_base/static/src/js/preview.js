@@ -9,7 +9,6 @@ odoo.define("mail_preview_base.preview", function (require) {
     var DocumentViewer = require("mail.DocumentViewer");
     var basic_fields = require("web.basic_fields");
     var registry = require("web.field_registry");
-    var AttachmentBox = require("mail.AttachmentBox");
 
     DocumentViewer.include({
         init: function (parent, attachments) {
@@ -56,18 +55,6 @@ odoo.define("mail_preview_base.preview", function (require) {
                 type === "video" ||
                 attachment.mimetype === "application/pdf"
             );
-        },
-    });
-
-    AttachmentBox.include({
-        init: function (parent, record, attachments) {
-            _.each(attachments, function (attachment) {
-                attachment.has_preview = DocumentViewer.prototype._hasPreview(
-                    attachment.mimetype && attachment.mimetype.split("/").shift(),
-                    attachment
-                );
-            });
-            this._super.apply(this, arguments);
         },
     });
 
@@ -134,12 +121,12 @@ odoo.define("mail_preview_base.preview", function (require) {
             this._super.apply(this, arguments);
             if (this.value) {
                 this.attachment = {
-                    mimetype: this.recordData.res_mimetype,
+                    mimetype: this.recordData.mimetype,
                     id: this.res_id,
-                    fileType: this.recordData.res_mimetype,
-                    name: this.filename,
+                    fileType: this.recordData.mimetype,
+                    name: this.recordData.name,
                 };
-                var mimetype = this.recordData.res_mimetype;
+                var mimetype = this.recordData.mimetype;
                 var type = mimetype.split("/").shift();
                 if (DocumentViewer.prototype._hasPreview(type, this.attachment)) {
                     this.$el.prepend(
