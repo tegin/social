@@ -1,2 +1,4 @@
 premailer
 extract-msg
+python-telegram-bot
+telegram
