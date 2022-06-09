@@ -1,6 +1,5 @@
 # Copyright 2020 Creu Blanca
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-
 from odoo import api, fields, models, tools
 
 
@@ -158,5 +157,4 @@ class MailBroker(models.Model):
 
     def _verify_bot(self, **kwargs):
         self.ensure_one()
-        # TODO: PASS IT TO WHATSAPP
-        return kwargs.get("hub.challenge")
+        return ""
