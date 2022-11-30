@@ -10,6 +10,9 @@ class NewMailController(MailController):
     def mail_init_messaging(self):
         result = super().mail_init_messaging()
         result["broker_slots"] = request.env["mail.broker"].broker_fetch_slot()
+        result["broker_channel_slots"] = request.env[
+            "mail.broker.channel"
+        ].broker_fetch_slot()
         return result
 
 

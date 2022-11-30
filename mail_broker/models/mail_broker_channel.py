@@ -174,3 +174,14 @@ class MailBrokerChannel(models.Model):
             {"message": message.mail_message_id.message_format()[0]},
         )
         return message
+
+    def broker_fetch_slot(self):
+        return [
+            {
+                "id": channel.id,
+                "name": channel.name,
+                "broker_id": channel.broker_id.id,
+                "localMessageUnreadCounter": 0,
+            }
+            for channel in self.search([("show_on_app", "=", True)])
+        ]
